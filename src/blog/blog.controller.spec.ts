@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { Test, TestingModule } from '@nestjs/testing';
 import { BlogController } from './blog.controller';
 import { BlogService } from './blog.service';

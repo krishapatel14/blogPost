@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { Module } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { UsersController } from './users.controller';
@@ -6,6 +7,7 @@ import { userSchema } from 'src/schemas/user.schema';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { JwtStrategy } from './jwtStrategy';
 
 @Module({
   imports:[
@@ -25,7 +27,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
   controllers: [
     UsersController
   ],
-  providers: [UsersService],
-  exports:[PassportModule]
+  providers: [UsersService,JwtStrategy],
+  exports:[JwtStrategy,PassportModule]
 })
 export class UsersModule {}
