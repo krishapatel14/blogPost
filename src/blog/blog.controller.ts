@@ -35,9 +35,16 @@ export class BlogController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateBlogDto: UpdateBlogDto) {
-    return this.blogService.update(+id, updateBlogDto);
-  }
+  async update(@Param('id') id: string, @Body() updateBlogDto: UpdateBlogDto) {
+    try {
+      const updatedBlog = await this.blogService.update(id, updateBlogDto);
+      return { 
+        message: 'Blog updated successfully',
+       updatedBlog
+     };
+    } catch (error) {
+      return { error: 'Internal server error' };
+    }  }
 
   @Delete(':id')
   remove(@Param('id') id: string) {

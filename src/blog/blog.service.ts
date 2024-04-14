@@ -30,8 +30,9 @@ export class BlogService {
     return await this.blogModel.find({user}).exec();
   }
 
-  update(id: number, updateBlogDto: UpdateBlogDto) {
-    return `This action updates a #${id} blog`;
+  async update(id: string, updateBlogDto: UpdateBlogDto):Promise<any> {
+    const updatedBlog = await this.blogModel.findByIdAndUpdate(id, updateBlogDto, { new: true });
+    return updatedBlog;
   }
 
   remove(id: number) {
