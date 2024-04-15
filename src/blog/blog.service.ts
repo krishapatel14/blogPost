@@ -24,7 +24,7 @@ export class BlogService {
   }
 
   async  findAll(): Promise<any> {
-    return await this.blogModel.find().populate("user");
+    return await this.blogModel.find().populate("user").exec(); //added exec()
   }
 
   async findByUser(user: ObjectId): Promise<any> {

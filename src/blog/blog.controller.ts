@@ -1,15 +1,18 @@
 /* eslint-disable prettier/prettier */
-import { Controller, Get, Post, Body, Patch, Param, Delete, Res } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Res, UseGuards } from '@nestjs/common';
 import { BlogService } from './blog.service';
 import { CreateBlogDto } from './dto/create-blog.dto';
 import { UpdateBlogDto } from './dto/update-blog.dto';
 import { ObjectId } from 'mongoose';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('blog')
 export class BlogController {
   constructor(private readonly blogService: BlogService) {}
 
+  //added Authguard for token 
   @Post()
+  @UseGuards(AuthGuard('jwt'))
   async create(@Body() createBlogDto: CreateBlogDto,@Res() res) {
     try{
       const newBlog=await this.blogService.create(createBlogDto);
@@ -20,15 +23,24 @@ export class BlogController {
     }
     catch(error){
       return  res.status(400).json({
-        message:error.message
+        message: "Login First :" + error.message
       })
     }
   }
 
+  //Find all method with token generation 
   @Get()
+  @UseGuards(AuthGuard('jwt'))
   findAll() {
+    console.log("Find all method called");
     return this.blogService.findAll();
   }
+
+  //  Original Find all method !
+  // @Get()
+  // findAll() {
+  //   return this.blogService.findAll();
+  // }
 
   @Get(':user')
   findOne(@Param('user') user: ObjectId) {
