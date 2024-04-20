@@ -1,10 +1,12 @@
 /* eslint-disable prettier/prettier */
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import { ConflictException, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { CreateBlogDto } from './dto/create-blog.dto';
 import { UpdateBlogDto } from './dto/update-blog.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Blog } from './entities/blog.entity';
 import { Model, ObjectId } from 'mongoose';
+import { LikeBlogDto } from './dto/like-blog.dto';
+import { DislikeBlogDto } from './dto/dislike-blog.dto';
 
 @Injectable()
 export class BlogService {
@@ -23,6 +25,81 @@ export class BlogService {
     }
   }
 
+
+  //Service for Blog-likes
+  async likeBlog(likeBlogDto: LikeBlogDto, userId: string): Promise<Blog> {
+    const { blogId } = likeBlogDto;
+    const blog = await this.blogModel.findById<Blog>(blogId); // Specify the type of document as Blog
+    if (!blog) {
+      throw new NotFoundException('Blog not found');
+    }
+    
+    if (blog.likedBy.includes(userId)) {
+      throw new ConflictException('You already liked this blog');
+    }
+
+    else{
+      
+      return await this.blogModel.findByIdAndUpdate(blogId,{
+        $inc:{likes:1},
+        $push:{
+          likedBy:userId,
+          
+        }
+      })
+    }
+    // blog.likedBy.push(userId);
+    // blog.likes += 1;
+    // await this.blogModel.create();
+    // return blog;
+  }
+
+  // async likeBlog(likeBlogDto: LikeBlogDto): Promise<Blog> {
+  //   const { blogId } = likeBlogDto;
+  //   return await this.blogModel.findByIdAndUpdate(
+  //     blogId,
+  //     { $inc: { likes: 1 } }, // Increment the likes count
+  //     { new: true }
+  //   );
+  // }
+
+  //Service for Blog-disLikes
+  // async dislikeBlog(dislikeBlogDto: DislikeBlogDto): Promise<Blog> {
+  //   const { blogId } = dislikeBlogDto;
+  //   return await this.blogModel.findByIdAndUpdate(
+  //     blogId,
+  //     { $inc: { dislikes: 1 } }, // Increment the dislikes count
+  //     { new: true }
+  //   );
+  // }
+
+  async dislikeBlog(dislikeBlogDto: DislikeBlogDto, userId: string): Promise<Blog> {
+    const { blogId } = dislikeBlogDto;
+    const blog = await this.blogModel.findById<Blog>(blogId); // Specify the type of document as Blog
+    console.log("UserId............"+userId);
+    if (!blog) {
+      throw new NotFoundException('Blog not found');
+    }
+
+    if (blog.disLikedBy?.includes(userId)) {
+      throw new ConflictException('You already disliked this blog');
+    }
+    else{
+      return await this.blogModel.findByIdAndUpdate(blogId,{
+        $inc:{disLikes:1,likes:-1},
+        
+        $push:{
+          disLikedBy:userId
+        },
+        $pull:{
+          likedBy:userId,
+          
+        },
+        
+      })
+    }
+    
+  }
   async  findAll(): Promise<any> {
     return await this.blogModel.find().populate("user").exec(); //added exec()
   }

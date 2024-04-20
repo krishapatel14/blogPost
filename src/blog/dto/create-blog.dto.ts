@@ -4,7 +4,8 @@ export class CreateBlogDto {
     description:string;
     noOfCharacters:number;
     datetime:Date;
-    user:{
-        id:string
-    }
+    userId: string;  
+    // user:{
+    //     id:string
+    // }
 }

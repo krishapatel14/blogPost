@@ -14,7 +14,20 @@ export class Blog {
 
   @Prop()
   noOfCharacters: number;
+
+  @Prop({default:0})
+  likes: number;
   
+  @Prop({default:0})
+  disLikes: number;
+  
+  @Prop({ type: [String], default: [] }) // Array of user names who liked the blog
+  likedBy: string[];
+
+  @Prop({ type: [String], default: [] }) // Array of user names who disliked the blog
+  disLikedBy: string[];
+
+
   @Prop({ default: Date.now })
   datetime: Date;
  

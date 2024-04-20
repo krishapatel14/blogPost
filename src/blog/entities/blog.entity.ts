@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { Date } from "mongoose";
 
 export class Blog {
@@ -5,4 +6,8 @@ export class Blog {
     description:string;
     noOfCharacters:number;
     datetime:Date;
+    likes:number;
+    disLikes:number;
+    likedBy:string[];
+    disLikedBy:string[];
 }
