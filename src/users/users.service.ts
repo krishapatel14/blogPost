@@ -44,8 +44,6 @@ private jwtService : JwtService) {}
         throw new UnauthorizedException('Invalid Credentials!!');
       }
       const isPasswordMatched = await bcrypt.compare(password,user.password)
-      console.log(password)
-      console.log(user.password)
       if(!isPasswordMatched){
         throw new UnauthorizedException('Invalid Password!!')
       }

@@ -48,31 +48,7 @@ export class BlogService {
         }
       })
     }
-    // blog.likedBy.push(userId);
-    // blog.likes += 1;
-    // await this.blogModel.create();
-    // return blog;
   }
-
-  // async likeBlog(likeBlogDto: LikeBlogDto): Promise<Blog> {
-  //   const { blogId } = likeBlogDto;
-  //   return await this.blogModel.findByIdAndUpdate(
-  //     blogId,
-  //     { $inc: { likes: 1 } }, // Increment the likes count
-  //     { new: true }
-  //   );
-  // }
-
-  //Service for Blog-disLikes
-  // async dislikeBlog(dislikeBlogDto: DislikeBlogDto): Promise<Blog> {
-  //   const { blogId } = dislikeBlogDto;
-  //   return await this.blogModel.findByIdAndUpdate(
-  //     blogId,
-  //     { $inc: { dislikes: 1 } }, // Increment the dislikes count
-  //     { new: true }
-  //   );
-  // }
-
   async dislikeBlog(dislikeBlogDto: DislikeBlogDto, userId: string): Promise<Blog> {
     const { blogId } = dislikeBlogDto;
     const blog = await this.blogModel.findById<Blog>(blogId); // Specify the type of document as Blog
@@ -93,7 +69,6 @@ export class BlogService {
         },
         $pull:{
           likedBy:userId,
-          
         },
         
       })

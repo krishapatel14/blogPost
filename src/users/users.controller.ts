@@ -21,6 +21,7 @@ export class UsersController {
   @Post('signup')
   async create(@Body() createUserDto: CreateUserDto, @Res() res) {
     try {
+      console.log(createUserDto)
       const savedUser = await this.usersService.signUp(createUserDto);
       return res.status(201).json({
         message: 'User added successfully',
@@ -38,6 +39,7 @@ export class UsersController {
   @Post('login')
   async login(@Body() loginUserDto:loginUserDto,@Req() req,@Res() res):Promise<{token:string}>{
     console.log('in users login!')
+    console.log(loginUserDto)
     const data = await this.usersService.login(loginUserDto);
     
     return res.status(200).json({

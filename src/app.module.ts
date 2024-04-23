@@ -8,14 +8,13 @@ import { UsersModule } from './users/users.module';
 import { ConfigModule } from '@nestjs/config';
 import { BlogCommentModule } from './blog-comment/blog-comment.module';
 
-
 @Module({
   imports: [
     BlogModule,
     ConfigModule.forRoot(),
     MongooseModule.forRoot('mongodb://127.0.0.1/blog'),
     UsersModule,
-    BlogCommentModule
+    BlogCommentModule,
   ],
   controllers: [AppController],
   providers: [AppService],
