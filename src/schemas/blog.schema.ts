@@ -33,5 +33,9 @@ export class Blog {
  
   @Prop({ type:mongoose.Schema.Types.ObjectId,ref:'User' }) // Define user as type Object
   user:User // Object containing userId
+
+  @Prop()
+  image: string;
 }
+
 export const blogSchema = SchemaFactory.createForClass(Blog);
